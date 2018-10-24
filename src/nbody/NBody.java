@@ -85,6 +85,6 @@ public class NBody {
     }
 
     public static void main(String[] args) {
-        new NBody(157788000.0, 25000.0, "_data/atom.txt");
+        new NBody(157788000.0, 25000.0, "_data/8star-rotation.txt");
     }
 }
