@@ -6,17 +6,17 @@ import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
 public class SolarSystem {
-    public SolarSystem(double duration, double increment, String filename) {
-        simulate(duration, increment, filename);
+    public SolarSystem(double duration, double increment, boolean displaySun) {
+        simulate(duration, increment, displaySun);
     }
 
-    public static void simulate(double duration, double increment, String filename) {
+    public static void simulate(double duration, double increment, boolean displaySun) {
         double clock = 0.0;
         double GRAVITATIONAL_CONSTANT = 6.67e-11;
-        In in = new In(filename);
+        In in = new In("_data/solar_system.txt");
         int bodies = in.readInt();
         double screenScale = in.readDouble();
-        int canvasSize = 1440;
+        int canvasSize = 1366;
         StdDraw.setCanvasSize(canvasSize, canvasSize);
         StdDraw.setScale(-screenScale, screenScale);
         StdDraw.enableDoubleBuffering();
@@ -28,18 +28,20 @@ public class SolarSystem {
         double[] radius = new double[bodies];
         String[] image = new String[bodies];
         double maxRadius = 0.0;
+        double factorScreen = (displaySun) ? 125.0 : 12500.0;
         for (int i = 0; i < bodies; i++) {
             coordinateX[i] = in.readDouble();
             coordinateY[i] = in.readDouble();
             velocityX[i] = in.readDouble();
             velocityY[i] = in.readDouble();
             mass[i] = in.readDouble();
-            radius[i] = in.readDouble();
+            radius[i] = factorScreen * in.readDouble();
             image[i] = in.readString();
             if (radius[i] > maxRadius) {
                 maxRadius = radius[i];
             }
         }
+        // double size = 1.0e+12;
         while (clock < duration) {
             double[] forceX = new double[bodies];
             double[] forceY = new double[bodies];
@@ -77,9 +79,13 @@ public class SolarSystem {
             }
             StdDraw.clear();
             // StdDraw.picture(0.0, 0.0, "_data/space.jpg");
-            for (int i = 0; i < bodies; i++) {
+            for (int i = (displaySun) ? 0 : 1; i < bodies; i++) {
+                if (i == 6) {
+                    StdDraw.picture(coordinateX[i], coordinateY[i], "_data/" + image[i], 2 * radius[i], radius[i]);
+                    continue;
+                }
                 // StdDraw.picture(coordinateX[i], coordinateY[i], "_data/" + image[i], size * radius[i] / maxRadius, size * radius[i] / maxRadius);
-                StdDraw.picture(coordinateX[i], coordinateY[i], "_data/" + image[i], 100 * radius[i], 100 * radius[i]);
+                StdDraw.picture(coordinateX[i], coordinateY[i], "_data/" + image[i], radius[i], radius[i]);
             }
             StdDraw.show();
             StdDraw.pause(20);
@@ -92,6 +98,6 @@ public class SolarSystem {
     }
 
     public static void main(String[] args) {
-        new SolarSystem(157788000.0, 250000.0, "_data/solar_system.txt");
+        new SolarSystem(157788000.0, 250000.0, false);
     }
 }
