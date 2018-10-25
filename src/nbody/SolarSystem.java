@@ -1,3 +1,4 @@
+
 package nbody;
 
 import edu.princeton.cs.algs4.In;
@@ -5,7 +6,6 @@ import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
 public class SolarSystem {
-
     public SolarSystem(double duration, double increment, String filename) {
         simulate(duration, increment, filename);
     }
@@ -38,6 +38,13 @@ public class SolarSystem {
                 maxRadius = radius[i];
             }
         }
+        double size = 1500000000000.0;
+        StdDraw.picture(0.0, 0.0, "nbody-simulation/_data/starfield.jpg");
+        for (int i = 0; i < 1; i++) {
+            // StdDraw.picture(coordinateX[i], coordinateY[i], "nbody-simulation/_data/" + image[i]);
+            StdDraw.picture(coordinateX[i], coordinateY[i], "nbody-simulation/_data/" + image[i], size, size);
+        }
+        StdDraw.show();
         /* while (clock < duration) {
             double[] forceX = new double[bodies];
             double[] forceY = new double[bodies];
@@ -89,6 +96,6 @@ public class SolarSystem {
     }
 
     public static void main(String[] args) {
-        new SolarSystem(157788000.0, 25000.0, "_data/solar_system.txt");
+        new SolarSystem(157788000.0, 25000.0, "nbody-simulation/_data/solar_system.txt");
     }
 }
