@@ -15,8 +15,10 @@ public class SolarSystem {
         double GRAVITATIONAL_CONSTANT = 6.67e-11;
         In in = new In(filename);
         int bodies = in.readInt();
-        double screenSize = in.readDouble();
-        StdDraw.setScale(-screenSize, screenSize);
+        double screenScale = in.readDouble();
+        int canvasSize = 1440;
+        StdDraw.setCanvasSize(canvasSize, canvasSize);
+        StdDraw.setScale(-screenScale, screenScale);
         StdDraw.enableDoubleBuffering();
         double[] coordinateX = new double[bodies];
         double[] coordinateY = new double[bodies];
@@ -38,14 +40,7 @@ public class SolarSystem {
                 maxRadius = radius[i];
             }
         }
-        double size = 1500000000000.0;
-        StdDraw.picture(0.0, 0.0, "nbody-simulation/_data/starfield.jpg");
-        for (int i = 0; i < 1; i++) {
-            // StdDraw.picture(coordinateX[i], coordinateY[i], "nbody-simulation/_data/" + image[i]);
-            StdDraw.picture(coordinateX[i], coordinateY[i], "nbody-simulation/_data/" + image[i], size, size);
-        }
-        StdDraw.show();
-        /* while (clock < duration) {
+        while (clock < duration) {
             double[] forceX = new double[bodies];
             double[] forceY = new double[bodies];
             for (int i = 0; i < bodies; i++) {
@@ -81,21 +76,22 @@ public class SolarSystem {
                 coordinateY[i] += increment * velocityY[i];
             }
             StdDraw.clear();
-            StdDraw.picture(0.0, 0.0, "_data/starfield.jpg");
+            // StdDraw.picture(0.0, 0.0, "_data/space.jpg");
             for (int i = 0; i < bodies; i++) {
-                StdDraw.picture(coordinateX[i], coordinateY[i], "_data/" + image[i]);
+                // StdDraw.picture(coordinateX[i], coordinateY[i], "_data/" + image[i], size * radius[i] / maxRadius, size * radius[i] / maxRadius);
+                StdDraw.picture(coordinateX[i], coordinateY[i], "_data/" + image[i], 100 * radius[i], 100 * radius[i]);
             }
             StdDraw.show();
             StdDraw.pause(20);
             clock += increment;
-        } */
-        StdOut.printf("SIMULATION OVER!!!\n%d\n%.2e\n", bodies, screenSize);
+        }
+        StdOut.printf("SIMULATION OVER!!!\n%d\n%.2e\n", bodies, screenScale);
         for (int i = 0; i < bodies; i++) {
             System.out.printf(" %.4e %.4e %.4e %.4e %.4e %.4e %s\n", coordinateX[i], coordinateY[i], velocityX[i], velocityY[i], mass[i], radius[i], image[i]);
         }
     }
 
     public static void main(String[] args) {
-        new SolarSystem(157788000.0, 25000.0, "nbody-simulation/_data/solar_system.txt");
+        new SolarSystem(157788000.0, 250000.0, "_data/solar_system.txt");
     }
 }
